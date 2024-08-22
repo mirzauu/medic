@@ -50,7 +50,7 @@ class LoginView(APIView):
             key='access_token', 
             value=access_token, 
             httponly=False, 
-            secure=False, 
+            secure=True, 
             samesite='Lax'
         )
         response.set_cookie(
