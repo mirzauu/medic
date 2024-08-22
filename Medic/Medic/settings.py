@@ -25,12 +25,14 @@ SECRET_KEY = 'django-insecure-+m^&j9a$u=-9beyt8$c(*ng!&qr@!op_$qy8*0o&6cz8$g*ci1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*','0.0.0.0']
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+     'corsheaders',
     'rest_framework',
     'user',
     'django.contrib.admin',
@@ -52,6 +54,16 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Medic.urls'
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://vcaree.netlify.app",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 TEMPLATES = [
     {
