@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import UserProfile
-from .serializers import UserSerializer
+from .serializers import CustomUserSerializer
 from rest_framework.permissions import IsAuthenticated  
 
 
@@ -69,5 +69,27 @@ class UserDetailsView(APIView):
 
     def get(self, request):
         user = request.user
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+        serializer = CustomUserSerializer(user)
+        
+        data = {
+            "username": serializer.data['username'],
+            "phone_number": serializer.data['profile']['phone_number'],
+            "address": serializer.data['profile']['address'],
+            "test_details": [
+                {
+                    "age": test_detail['age'],
+                    "doctor_name": test_detail['doctor']['name'],
+                    "sample_collected_at": test_detail['sample_collected_at'],
+                    "tests": [
+                        {
+                            "description": test['Test_Description'],
+                            "value": test_detail['Value_Observed'], 
+                            "referenceInterval": test['Biological_Reference_Interval']
+                        }
+                        for test in test_detail['tests']
+                    ]
+                }
+                for test_detail in serializer.data['profile']['test_details']
+            ]
+        }
+        return Response(data)
